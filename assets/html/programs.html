@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الخطة الدراسية - اليونسيون</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6D256F; --primary-gradient: linear-gradient(135deg, #6D256F 0%, #8D2E8F 100%);
+            --secondary: #1EBAA6; --secondary-gradient: linear-gradient(135deg, #1EBAA6 0%, #2AD4BD 100%);
+            --accent: #FF6B9D; --white: #FFFFFF; --light-bg: #F8F9FA; --dark-text: #2D3748; --light-text: #666;
+            --card-shadow: 0 20px 40px rgba(109, 37, 111, 0.15); --hover-shadow: 0 25px 50px rgba(109, 37, 111, 0.25);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
+        body { background: var(--light-bg); color: var(--dark-text); min-height: 100vh; overflow-x: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; flex-direction: row-reverse; }
+        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 55px; height: 55px; background: var(--primary-gradient); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; box-shadow: var(--card-shadow); }
+        .logo-text { font-size: 24px; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .back-btn { width: 50px; height: 50px; border-radius: 14px; background: white; border: none; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 22px; box-shadow: var(--card-shadow); cursor: pointer; transition: var(--transition); }
+        .back-btn:hover { background: var(--secondary); color: white; transform: translateY(-3px); }
+        .hero { text-align: center; padding: 40px 0 20px; }
+        .hero-title { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-subtitle { font-size: 1.2rem; color: var(--light-text); max-width: 600px; margin: 0 auto 30px; line-height: 1.6; }
+        .programs-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-top: 40px; }
+        .program-card { background: white; border-radius: 22px; padding: 30px 25px; box-shadow: var(--card-shadow); transition: var(--transition); border: 2px solid transparent; }
+        .program-card:hover { transform: translateY(-8px); box-shadow: var(--hover-shadow); border-color: rgba(109, 37, 111, 0.2); }
+        .program-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .program-title { font-size: 24px; font-weight: 700; color: var(--primary); }
+        .program-duration { background: var(--secondary-gradient); color: white; padding: 6px 12px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+        .program-intensity { display: inline-block; margin-bottom: 15px; padding: 4px 12px; background: rgba(30, 186, 166, 0.2); color: var(--secondary); border-radius: 12px; font-size: 13px; }
+        .program-description { color: var(--light-text); line-height: 1.7; margin-bottom: 25px; font-size: 15px; }
+        .schedule-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: var(--primary); }
+        .schedule-days { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 15px; }
+        .schedule-day { background: rgba(109, 37, 111, 0.05); border-radius: 10px; padding: 12px; text-align: center; }
+        .day-name { font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+        .day-task { font-size: 13px; color: var(--light-text); }
+        .progress-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
+        .progress-stats { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .progress-stat { text-align: center; }
+        .stat-value { font-size: 20px; font-weight: 700; color: var(--primary); display: block; }
+        .stat-label { font-size: 12px; color: var(--light-text); }
+        .program-features { margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.08); }
+        .features-title { font-size: 18px; font-weight: 700; margin-bottom: 15px; color: var(--primary); }
+        .features-list { list-style: none; }
+        .feature-item { display: flex; align-items: flex-start; margin-bottom: 10px; color: var(--light-text); font-size: 14px; }
+        .feature-item i { color: var(--secondary); margin-left: 10px; margin-top: 3px; }
+        .comparison-table { margin-top: 50px; background: white; border-radius: 22px; padding: 30px; box-shadow: var(--card-shadow); overflow: hidden; }
+        .table-title { font-size: 24px; font-weight: 700; margin-bottom: 25px; text-align: center; color: var(--primary); }
+        .table-container { overflow-x: auto; border-radius: 12px; }
+        .table-container::-webkit-scrollbar { height: 12px; }
+        .table-container::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+        .table-container::-webkit-scrollbar-thumb { background: var(--secondary-gradient); border-radius: 10px; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th, td { padding: 15px; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.08); }
+        th { background: rgba(30, 186, 166, 0.1); color: var(--secondary); font-weight: 700; }
+        td { color: var(--light-text); }
+        tr:hover { background: rgba(0,0,0,0.03); }
+        .tips-section { margin-top: 50px; background: white; border-radius: 22px; padding: 30px; box-shadow: var(--card-shadow); }
+        .tips-title { font-size: 24px; font-weight: 700; margin-bottom: 25px; text-align: center; color: var(--primary); }
+        .tip-item { display: flex; align-items: flex-start; margin-bottom: 20px; padding: 15px; background: rgba(109, 37, 111, 0.05); border-radius: 12px; }
+        .tip-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--secondary-gradient); display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; margin-left: 15px; flex-shrink: 0; }
+        .tip-title { font-weight: 700; margin-bottom: 8px; color: var(--primary); }
+        .tip-description { color: var(--light-text); font-size: 14px; line-height: 1.6; }
+        .footer { text-align: center; padding: 40px 0 20px; margin-top: 70px; color: var(--light-text); font-size: 14px; border-top: 1px solid rgba(0,0,0,0.08); }
+        .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.2rem; }
+            .programs-container { grid-template-columns: 1fr; gap: 20px; }
+            .schedule-days { grid-template-columns: repeat(2, 1fr); }
+            th, td { padding: 10px 5px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header fade-in">
+            <a href="javascript:void(0)" onclick="goBack()" class="back-btn"><i class="fas fa-arrow-right"></i></a>
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="logo-text">اليونسيون</div>
+            </div>
+        </header>
+        <section class="hero fade-in">
+            <h1 class="hero-title">الخطة الدراسية</h1>
+            <p class="hero-subtitle">اختر الخطة التي تناسب وقتك وطاقتك، وابدأ رحلتك في التعلم بثقة وانتظام!</p>
+        </section>
+        <div class="programs-container">
+            <div class="program-card fade-in">
+                <div class="program-header"><h2 class="program-title">الخطة الممتدة</h2><span class="program-duration">5 أشهر</span></div>
+                <div class="program-intensity">شدة منخفضة إلى متوسطة</div>
+                <p class="program-description">مثالية للتوازن بين الدراسة والحياة. تسمح بتثبيت المعلومات والمفردات بشكل قوي دون ضغط، مع وقت كافٍ للمراجعة اليومية والأسبوعية.</p>
+                <div class="program-schedule">
+                    <h3 class="schedule-title">التوزيع الأسبوعي المقترح:</h3>
+                    <div class="schedule-days">
+                        <div class="schedule-day"><div class="day-name">الثلاثاء</div><div class="day-task">درس جديد + حفظ النصف الأول من مفرداته (حوالي 60 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">الخميس</div><div class="day-task">درس جديد + حفظ النصف الأول من مفرداته (حوالي 60 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">السبت</div><div class="day-task">مراجعة الدرسين + مراجعة كل مفردات الأسبوع (120 كلمة) + تطبيق عملي</div></div>
+                    </div>
+                </div>
+                <div class="program-progress"><h3 class="progress-title">معدل التقدم:</h3>
+                    <div class="progress-stats">
+                        <div class="progress-stat"><span class="stat-value">7</span><span class="stat-label">دروس شهرياً</span></div>
+                        <div class="progress-stat"><span class="stat-value">840</span><span class="stat-label">كلمة شهرياً</span></div>
+                        <div class="progress-stat"><span class="stat-value">4320</span><span class="stat-label">كلمة إجمالاً</span></div>
+                    </div>
+                </div>
+                <div class="program-features">
+                    <h3 class="features-title">مميزات الخطة:</h3>
+                    <ul class="features-list">
+                        <li class="feature-item"><i class="fas fa-check"></i><span>تثبيت قوي للمعلومات والمفردات</span></li>
+                        <li class="feature-item"><i class="fas fa-check"></i><span>وقت كافٍ للمراجعة اليومية والأسبوعية</span></li>
+                        <li class="feature-item"><i class="fas fa-check"></i><span>مناسبة للمشغولين أو من يفضلون التأني</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="program-card fade-in">
+                <div class="program-header"><h2 class="program-title">الخطة المتوسطة</h2><span class="program-duration">4 أشهر</span></div>
+                <div class="program-intensity">شدة متوسطة</div>
+                <p class="program-description">جيدة للطلاب المنتظمين. وتيرة منتظمة تحافظ على التقدم المستمر في كل من الدروس والمفردات مع تخصيص يوم كامل للمراجعة والتطبيق.</p>
+                <div class="program-schedule">
+                    <h3 class="schedule-title">التوزيع الأسبوعي المقترح:</h3>
+                    <div class="schedule-days">
+                        <div class="schedule-day"><div class="day-name">الاثنين</div><div class="day-task">درس جديد + حفظ ثلث مفرداته (حوالي 40 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">الأربعاء</div><div class="day-task">درس جديد + حفظ ثلث مفرداته (حوالي 40 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">الجمعة</div><div class="day-task">درس جديد + حفظ ثلث مفرداته (حوالي 40 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">الأحد</div><div class="day-task">مراجعة الدروس الثلاثة + مراجعة جميع مفردات الأسبوع (120 كلمة) + تطبيق عملي</div></div>
+                    </div>
+                </div>
+                <div class="program-progress"><h3 class="progress-title">معدل التقدم:</h3>
+                    <div class="progress-stats">
+                        <div class="progress-stat"><span class="stat-value">9</span><span class="stat-label">دروس شهرياً</span></div>
+                        <div class="progress-stat"><span class="stat-value">1080</span><span class="stat-label">كلمة شهرياً</span></div>
+                        <div class="progress-stat"><span class="stat-value">4320</span><span class="stat-label">كلمة إجمالاً</span></div>
+                    </div>
+                </div>
+                <div class="program-features">
+                    <h3 class="features-title">مميزات الخطة:</h3>
+                    <ul class="features-list">
+                        <li class="feature-item"><i class="fas fa-check"></i><span>وتيرة منتظمة تحافظ على التقدم المستمر</span></li>
+                        <li class="feature-item"><i class="fas fa-check"></i><span>تخصيص يوم كامل للمراجعة والتطبيق</span></li>
+                        <li class="feature-item"><i class="fas fa-check"></i><span>مناسبة للطلاب المنتظمين (الموصى بها)</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="program-card fade-in">
+                <div class="program-header"><h2 class="program-title">الخطة المكثفة</h2><span class="program-duration">3 أشهر</span></div>
+                <div class="program-intensity">شدة عالية</div>
+                <p class="program-description">تتطلب التزامًا كبيرًا. إنهاء جميع المواد في وقت قياسي، لكنها تتطلب تقسيمًا دقيقًا للوقت ومراجعات مكثفة لمنع النسيان.</p>
+                <div class="program-schedule">
+                    <h3 class="schedule-title">التوزيع الأسبوعي المقترح:</h3>
+                    <div class="schedule-days">
+                        <div class="schedule-day"><div class="day-name">اليوم 1 (السبت)</div><div class="day-task">درس جديد + حفظ ربع مفرداته (30 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">اليوم 2 (الأحد)</div><div class="day-task">درس جديد + حفظ ربع مفرداته (30 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">اليوم 3 (الاثنين)</div><div class="day-task">درس جديد + حفظ ربع مفرداته (30 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">اليوم 4 (الثلاثاء)</div><div class="day-task">درس جديد + حفظ ربع مفرداته (30 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">اليوم 5 (الأربعاء)</div><div class="day-task">مراجعة الدروس الأربعة + مراجعة جميع مفرداتهم (120 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">اليوم 6 (الخميس)</div><div class="day-task">درس جديد + حفظ ربع مفرداته (30 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">اليوم 7 (الجمعة)</div><div class="day-task">درس جديد + حفظ ربع مفرداته (30 كلمة)</div></div>
+                        <div class="schedule-day"><div class="day-name">اليوم 8 (السبت)</div><div class="day-task">مراجعة أسبوعية شاملة للدروس الستة وكل مفرداتهم (240 كلمة) + تطبيق عملي</div></div>
+                    </div>
+                </div>
+                <div class="program-progress"><h3 class="progress-title">معدل التقدم:</h3>
+                    <div class="progress-stats">
+                        <div class="progress-stat"><span class="stat-value">12</span><span class="stat-label">دروس شهرياً</span></div>
+                        <div class="progress-stat"><span class="stat-value">1440</span><span class="stat-label">كلمة شهرياً</span></div>
+                        <div class="progress-stat"><span class="stat-value">4320</span><span class="stat-label">كلمة إجمالاً</span></div>
+                    </div>
+                </div>
+                <div class="program-features">
+                    <h3 class="features-title">مميزات الخطة:</h3>
+                    <ul class="features-list">
+                        <li class="feature-item"><i class="fas fa-check"></i><span>إنهاء جميع المواد في وقت قياسي</span></li>
+                        <li class="feature-item"><i class="fas fa-check"></i><span>مناسبة لمن لديهم وقت مكثف للدراسة</span></li>
+                        <li class="feature-item"><i class="fas fa-check"></i><span>تتطلب تقسيمًا دقيقًا للوقت ومراجعات مكثفة</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="comparison-table fade-in">
+            <h2 class="table-title">جدول مقارنة بين الخطط الدراسية</h2>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>الخطة</th><th>المدة</th><th>الدروس أسبوعيًا</th><th>الكلمات أسبوعيًا</th><th>الشدة</th><th>الملائمة</th><th>معدل التقدم الشهري</th><th>إجمالي الكلمات</th></tr></thead>
+                    <tbody>
+                        <tr><td>الخطة الممتدة</td><td>5 أشهر</td><td>1.75 درس</td><td>210 كلمة</td><td>منخفضة</td><td>للمشغولين</td><td>840 كلمة</td><td>4320 كلمة</td></tr>
+                        <tr><td>الخطة المتوسطة</td><td>4 أشهر</td><td>2.25 درس</td><td>270 كلمة</td><td>متوسطة</td><td>للطلاب المنتظمين</td><td>1080 كلمة</td><td>4320 كلمة</td></tr>
+                        <tr><td>الخطة المكثفة</td><td>3 أشهر</td><td>3 دروس</td><td>360 كلمة</td><td>عالية</td><td>لمن لديهم وقت مكثف</td><td>1440 كلمة</td><td>4320 كلمة</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tips-section fade-in">
+            <h2 class="tips-title">نصائح ذهبية للنجاح</h2>
+            <div class="tip-item"><div class="tip-icon"><i class="fas fa-link"></i></div><div class="tip-content"><h3 class="tip-title">الربط مباشرة</h3><p class="tip-description">دائمًا اربط حفظ المفردات بدرسها. اقرأ الدرس ثم احفظ كلماته، هذا يساعد الدماغ على ربطها في سياقها واسمع التسجيل الصوتي للمفردات.</p></div></div>
+            <div class="tip-item"><div class="tip-icon"><i class="fas fa-language"></i></div><div class="tip-content"><h3 class="tip-title">تطبيق المفردات</h3><p class="tip-description">حاول استخدام الكلمات الجديدة في جمل أثناء التطبيق العملي ليوم المراجعة.</p></div></div>
+            <div class="tip-item"><div class="tip-icon"><i class="fas fa-sync-alt"></i></div><div class="tip-content"><h3 class="tip-title">المرونة</h3><p class="tip-description">يمكنك تبديل أيام دراسة الدروس مع أيام المراجعة حسب ظروفك، المهم أن تنهي الحصة الأسبوعية المخطط لها.</p></div></div>
+        </div>
+        <footer class="footer fade-in"><p>اختر الخطة التي تناسب وقتك وطاقتك، وابدأ رحلتك في التعلم بثقة وانتظام!</p></footer>
+    </div>
+    <script>
+        function goBack() {
+            if (typeof Android !== 'undefined' && Android.goBack) { Android.goBack(); }
+            else if (typeof AndroidBridge !== 'undefined' && AndroidBridge.goBack) { AndroidBridge.goBack(); }
+            else { window.history.back(); }
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.fade-in').forEach(function(el) {
+                var top = el.getBoundingClientRect().top;
+                if (top < window.innerHeight - 100) el.classList.add('visible');
+            });
+            window.addEventListener('scroll', function() {
+                document.querySelectorAll('.fade-in').forEach(function(el) {
+                    var top = el.getBoundingClientRect().top;
+                    if (top < window.innerHeight - 100) el.classList.add('visible');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

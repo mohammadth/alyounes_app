@@ -1,0 +1,272 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../config.dart';
+import '../services/auth_service.dart';
+
+class ExamsLoginScreen extends StatefulWidget {
+  const ExamsLoginScreen({super.key});
+
+  @override
+  State<ExamsLoginScreen> createState() => _ExamsLoginScreenState();
+}
+
+class _ExamsLoginScreenState extends State<ExamsLoginScreen> {
+  final _usernameController = TextEditingController();
+  final _authService = AuthService();
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+
+  Future<void> _handleLogin() async {
+    if (!_formKey.currentState!.validate()) return;
+    setState(() => _isLoading = true);
+
+    final result = await _authService.examsLogin(
+      _usernameController.text.trim(),
+    );
+
+    if (!mounted) return;
+    setState(() => _isLoading = false);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(result['message'] ?? ''),
+        backgroundColor: result['success'] == true
+            ? AppConfig.successColor
+            : AppConfig.errorColor,
+      ),
+    );
+
+    if (result['success'] == true) {
+      Navigator.pushReplacementNamed(
+        context,
+        '/webview',
+        arguments: {'title': 'الاختبارات', 'url': AppConfig.examsPageUrl},
+      );
+    }
+  }
+
+  Future<void> _pasteFromClipboard() async {
+    final data = await Clipboard.getData(Clipboard.kTextPlain);
+    if (data?.text != null && data!.text!.isNotEmpty) {
+      _usernameController.text = data.text!;
+    }
+  }
+
+  Future<void> _contactAdmin() async {
+    final url = Uri.parse(
+      '${AppConfig.whatsappUrl}?text=${AppConfig.whatsappMessage}',
+    );
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Form(
+              key: _formKey,
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 500),
+                decoration: BoxDecoration(
+                  color: AppConfig.white,
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppConfig.primaryColor.withValues(alpha: 0.15),
+                      blurRadius: 40,
+                      offset: const Offset(0, 20),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 50),
+                      decoration: const BoxDecoration(
+                        gradient: AppConfig.primaryGradient,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                          topRight: Radius.circular(25),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          const Text(
+                            'اليونسيون - الاختبارات',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.2),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.description,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          const Text(
+                            'دخول الاختبارات',
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(30),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'اسم المستخدم',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: AppConfig.darkText,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Stack(
+                            children: [
+                              TextFormField(
+                                controller: _usernameController,
+                                textInputAction: TextInputAction.go,
+                                onFieldSubmitted: (_) => _handleLogin(),
+                                validator: (v) => v == null || v.trim().isEmpty
+                                    ? 'يجب إدخال اسم المستخدم الخاص بالاختبارات'
+                                    : null,
+                                decoration: const InputDecoration(
+                                  hintText: 'أدخل اسم المستخدم',
+                                  contentPadding: EdgeInsets.only(
+                                    left: 80,
+                                    right: 20,
+                                    top: 18,
+                                    bottom: 18,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                left: 5,
+                                top: 5,
+                                bottom: 5,
+                                child: Material(
+                                  color: AppConfig.secondaryColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: InkWell(
+                                    onTap: _pasteFromClipboard,
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Container(
+                                      width: 70,
+                                      alignment: Alignment.center,
+                                      child: const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.paste,
+                                            color: Colors.white,
+                                            size: 16,
+                                          ),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            'لصق',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 25),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 55,
+                            child: ElevatedButton(
+                              onPressed: _isLoading ? null : _handleLogin,
+                              child: _isLoading
+                                  ? const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 2.5,
+                                      ),
+                                    )
+                                  : const Text(
+                                      'الدخول إلى الاختبارات',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                            ),
+                          ),
+                          const SizedBox(height: 25),
+                          Center(
+                            child: GestureDetector(
+                              onTap: _contactAdmin,
+                              child: RichText(
+                                text: const TextSpan(
+                                  text: 'ليس لديك حساب؟ ',
+                                  style: TextStyle(
+                                    color: AppConfig.lightText,
+                                    fontSize: 14,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: 'تواصل مع المسؤول',
+                                      style: TextStyle(
+                                        color: AppConfig.primaryColor,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

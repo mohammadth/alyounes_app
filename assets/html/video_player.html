@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مشغل الفيديو</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000; color: #fff; font-family: 'Tajawal', sans-serif; overflow: hidden; height: 100vh; width: 100vw; }
+        #player { width: 100%; height: 100%; }
+        iframe { width: 100%; height: 100%; border: none; }
+        .loading { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; }
+        .spinner { width: 50px; height: 50px; border: 4px solid rgba(109, 37, 111, 0.2); border-top: 4px solid #6D256F; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>جاري تحميل الفيديو...</p>
+    </div>
+    <div id="player"></div>
+    <script>
+        var urlParams = new URLSearchParams(window.location.search);
+        var videoId = urlParams.get('video') || '';
+        var title = urlParams.get('title') || 'فيديو';
+        document.title = title;
+        if (videoId) {
+            document.getElementById('player').innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+            document.getElementById('loading').style.display = 'none';
+        } else {
+            document.getElementById('loading').innerHTML = '<p>لا يوجد فيديو محدد</p>';
+        }
+    </script>
+</body>
+</html>
